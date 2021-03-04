@@ -26,19 +26,28 @@ $site = @{ SiteName = $sitename; Token = $token }
 (Get-KuduChildItem @site '/site/wwwroot').Path
 ```
 
-# Cmdlets
-## New-KuduAuthorizationToken $username $password
+# Basic operations
+## New-KuduAuthorizationToken
 Create a token used to authorize to Kudu. This token is required for all operations.
+
+    $token = New-KuduAuthorizationToken $username $password
+
+## Get-KuduEnvironment
+Get the properties version and siteLastUpdated from the Kudu site. A nice and simple test function:
+
+    Get-KuduEnvironment
 
 ## File operations
 ### Receive-KuduFile
 Download a file from Kudu:
 
     Receive-KuduFile $sitename $token '/site/wwwroot/file-to-download.txt' .\file-to-save-to.txt
+
 ### Send-KuduFile
 Upload a file to Kudu:
 
     Send-KuduFile $sitename $token '/site/wwwroot/new-file-name.txt' .\file-to-upload.txt
+
 ### Remove-KuduFile
 Delete a file from Kudu:
 
@@ -49,13 +58,14 @@ Delete a file from Kudu:
 Get the files and folders in the specified folder:
 
     Get-KuduChildItem $sitename $token '/site/wwwroot/'
+
 ### New-KuduFolder
 Create a folder on Kudu:
 
     New-KuduFolder $sitename $token '/site/wwwroot/folder1/folder2/'
+
 ### Remove-KuduFolder
 Delete a folder from Kudu:
 
     Remove-KuduFolder $sitename $token '/site/wwwroot/folder'
-
 
