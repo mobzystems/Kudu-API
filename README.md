@@ -1,5 +1,5 @@
 # Kudu-API
-A Powershell module to access Azure Kudu
+A Powershell module to access Azure Kudu. It focuses on the *Virtual File System* operations specified in https://github.com/projectkudu/kudu/wiki/REST-API but the rest should be straightforward to add when necessary.
 
 # Usage
 ```powershell
