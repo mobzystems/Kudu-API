@@ -70,3 +70,7 @@ Delete a folder from Kudu:
 
     Remove-KuduFolder $sitename $token '/site/wwwroot/folder'
 
+### Get-KuduZippedFolder
+Download a ZIP file with the contents of the folder:
+
+    Get-KuduZippedFolder $sitename $token '/site/wwwroot/folder' .\zip-file-to-save.zip
