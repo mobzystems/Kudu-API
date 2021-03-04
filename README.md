@@ -26,13 +26,14 @@ $site = @{ SiteName = $sitename; Token = $token }
 (Get-KuduChildItem @site '/site/wwwroot').Path
 ```
 
-# Basic operations
-## New-KuduAuthorizationToken
+# Operations
+## Basic operations
+### New-KuduAuthorizationToken
 Create a token used to authorize to Kudu. This token is required for all operations.
 
     $token = New-KuduAuthorizationToken $username $password
 
-## Get-KuduEnvironment
+### Get-KuduEnvironment
 Get the properties version and siteLastUpdated from the Kudu site. A nice and simple test function:
 
     Get-KuduEnvironment
