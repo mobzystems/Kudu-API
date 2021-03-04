@@ -333,6 +333,32 @@ Function Send-KuduFile()
     return Set-KuduItem $SiteName $Token (EnsureValidPath $VfsPath) -InFile $LocalFile
 }
 
+Function Set-KuduFileContent()
+{
+    <#
+        .SYNOPSIS
+
+        Set or update the contents of a file in Kudu vfs
+    #>
+    [CmdletBinding()]
+    Param(
+        # The Azure Web App name
+        [Parameter(Mandatory=$true)]
+        [string]$SiteName,
+        # Created using New-KuduAuthorizationToken
+        [Parameter(Mandatory=$true)]
+        [string]$Token,
+        # Must start with BUT NOT END WITH a slash
+        [Parameter(Mandatory=$true)]
+        [string]$VfsPath,
+        # The contents to set
+        [Parameter(Mandatory=$true)]
+        [string]$Content
+    )
+
+    return Invoke-KuduApi $SiteName $Token 'PUT' "vfs$(EnsureValidPath $VfsPath)" -Body $Content
+}
+
 Function Remove-KuduFile()
 {
     <#
