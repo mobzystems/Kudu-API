@@ -49,6 +49,11 @@ Upload a file to Kudu:
 
     Send-KuduFile $sitename $token '/site/wwwroot/new-file-name.txt' .\file-to-upload.txt
 
+### Set-KuduFileContent
+Set or update the contents of a file on Kudu:
+
+    Set-KuduFileContent $sitename $token '/site/wwwroot/test.txt' "test1`r`nttest2" # Note: two lines
+
 ### Remove-KuduFile
 Delete a file from Kudu:
 
