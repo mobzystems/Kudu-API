@@ -34,7 +34,7 @@ Create a token used to authorize to Kudu. This token is required for all operati
     $token = New-KuduAuthorizationToken $username $password
 
 ### Get-KuduEnvironment
-Get the properties version and siteLastUpdated from the Kudu site. A nice and simple test function:
+Get an object with properties *version* and *siteLastModified* from the Kudu site. A nice and simple test function:
 
     Get-KuduEnvironment
 
@@ -61,12 +61,12 @@ Delete a file from Kudu:
 
 ## Folder operations
 ### Get-KuduChildItem
-Get the files and folders in the specified folder:
+Get the files and folders in the specified folder (not recursive):
 
     Get-KuduChildItem $sitename $token '/site/wwwroot/'
 
 ### New-KuduFolder
-Create a folder on Kudu:
+Create one or more folders on Kudu:
 
     New-KuduFolder $sitename $token '/site/wwwroot/folder1/folder2/'
 
