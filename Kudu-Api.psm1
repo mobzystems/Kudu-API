@@ -105,7 +105,7 @@ Function Invoke-KuduApi()
 
 Function EnsureValidPath() {
     <#
-        Ensure a pah starts with a slash and optionally ends with one, too
+        Ensure a path starts with a slash and optionally ends with one, too
         Ensure it does NOT contain double slashes
     #>
     Param(
@@ -126,9 +126,9 @@ Function EnsureValidPath() {
         }
     } else {
         if ($IsFolder) {
-            return "/$VfsPath/" # Trailing slash
+            return "/$p/" # Trailing slash
         } else {
-            return "/$VfsPath" # No trailing slash
+            return "/$p" # No trailing slash
         }
     }
 }
@@ -445,10 +445,37 @@ Function Remove-KuduFolder()
         [string]$Token,
         # Must start with AND END WITH a slash
         [Parameter(Mandatory=$true)]
-        [string]$VfsPath
-    )
+        [string]$VfsPath,
+        # If set, removes all content before removing the folder
+        [switch]$Recurse
+)
 
-    return Remove-KuduItem $SiteName $Token (EnsureValidPath $VfsPath -IsFolder)
+    [string]$path = (EnsureValidPath $VfsPath -IsFolder)
+
+    if ($Recurse) {
+        Write-Verbose "Removing contents of folder '$path'"
+        # Get the contents of the folder
+        try {
+            $items = Get-KuduChildItem -SiteName $SiteName -Token $Token -VfsPath $path
+        }
+        catch {
+            return $_
+        }
+        # Remove files right away, remove folders via -Recurse call to ourselves
+        foreach ($item in $items) {
+            Write-Verbose "Found '$path$($item.name)' ($($item.mime))"
+            if ($item.mime -eq 'inode/directory') {
+                Remove-KuduFolder -SiteName $SiteName -Token $Token -VfsPath "$path$($item.name)/" -Recurse | Out-Null
+            } else {
+                Write-Verbose "Removing file '$path$($item.name)'..."
+                Remove-KuduFile -SiteName $SiteName -Token $Token "$path$($item.name)" | Out-Null
+            }
+        }
+        Write-Verbose "Removing folder '$path'..."
+    }
+
+    # Remove the (now empty) folder or try renaming the folder without emptying it
+    return Remove-KuduItem $SiteName $Token $path
 }
 
 Function Get-KuduZippedFolder()
